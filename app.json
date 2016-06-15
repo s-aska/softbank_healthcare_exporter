@@ -1,0 +1,13 @@
+{
+  "name": "Softbank Healthcare Exporter",
+  "description": "Exporter for Softbank Healthcare metrics https://prometheus.io/",
+  "keywords": [
+    "Prometheus"
+  ],
+  "website": "https://github.com/s-aska/softbank_healthcare_exporter",
+  "repository": "https://github.com/s-aska/softbank_healthcare_exporter",
+  "env": {
+    "SOFTBANK_HEALTHCARE_TELNO": "",
+    "SOFTBANK_HEALTHCARE_PASSWORD": ""
+  }
+}
