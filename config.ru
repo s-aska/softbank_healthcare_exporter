@@ -6,7 +6,9 @@ require 'softbank_healthcare'
 prometheus = Prometheus::Client.registry
 
 @weight = prometheus.gauge(:softbank_healthcare_weight, 'Softbank Healthcare 体重(kg)')
-@body_fat = prometheus.gauge(:softbank_healthcare_body_fat, 'Softbank Healthcare 体脂肪率(%)')
+@body_fat_percentage = prometheus.gauge(:softbank_healthcare_body_fat_percentage, 'Softbank Healthcare 体脂肪率(%)')
+@amount_of_body_fat = prometheus.gauge(:softbank_healthcare_amount_of_body_fat, 'Softbank Healthcare 体脂肪量(kg)')
+@lean_body_mass = prometheus.gauge(:softbank_healthcare_lean_body_mass, 'Softbank Healthcare 除脂肪体重(kg)')
 @bmi = prometheus.gauge(:softbank_healthcare_bmi, 'Softbank Healthcare BMI')
 @basal_metabolism = prometheus.gauge(:softbank_healthcare_basal_metabolism, 'Softbank Healthcare 基礎代謝')
 @physical_age = prometheus.gauge(:softbank_healthcare_physical_age, 'Softbank Healthcare 身体年齢(歳)')
@@ -20,8 +22,12 @@ format = Prometheus::Client::Formats::Text
 @client = SoftBankHealthCare::Client.new telno: ENV['SOFTBANK_HEALTHCARE_TELNO'], password: ENV['SOFTBANK_HEALTHCARE_PASSWORD']
 
 def collect()
+  amount_of_body_fat = @client.weight * @client.body_fat
+  lean_body_mass = @client.weight - amount_of_body_fat
   @weight.set({}, @client.weight)
-  @body_fat.set({}, @client.body_fat)
+  @body_fat_percentage.set({}, @client.body_fat)
+  @amount_of_body_fat.set({}, amount_of_body_fat)
+  @lean_body_mass.set({}, lean_body_mass)
   @bmi.set({}, @client.bmi)
   @basal_metabolism.set({}, @client.basal_metabolism)
   @physical_age.set({}, @client.physical_age)

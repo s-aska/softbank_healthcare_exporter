@@ -23,6 +23,9 @@ for num in 1..90 do
 	date = Date.today - num
 	client.date = date
 
+	amount_of_body_fat = client.weight * client.body_fat
+	lean_body_mass = client.weight - amount_of_body_fat
+
 	data = base
 	data[:timestamp] = date.to_time.to_i
 
@@ -30,7 +33,13 @@ for num in 1..90 do
 	influxdb.write_point("softbank_healthcare_weight", data)
 
 	data[:values][:value] = client.body_fat.to_f
-	influxdb.write_point("softbank_healthcare_body_fat", data)
+	influxdb.write_point("softbank_healthcare_body_fat_percentage", data)
+
+	data[:values][:value] = amount_of_body_fat.to_f
+	influxdb.write_point("softbank_healthcare_amount_of_body_fat", data)
+
+	data[:values][:value] = lean_body_mass.to_f
+	influxdb.write_point("softbank_healthcare_lean_body_mass", data)
 
 	data[:values][:value] = client.bmi.to_f
 	influxdb.write_point("softbank_healthcare_bmi", data)
