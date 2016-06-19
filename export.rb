@@ -23,7 +23,7 @@ for num in 1..90 do
 	date = Date.today - num
 	client.date = date
 
-	amount_of_body_fat = client.weight * client.body_fat
+	amount_of_body_fat = client.weight * client.body_fat / 100
 	lean_body_mass = client.weight - amount_of_body_fat
 
 	data = base

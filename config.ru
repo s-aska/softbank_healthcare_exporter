@@ -22,7 +22,7 @@ format = Prometheus::Client::Formats::Text
 @client = SoftBankHealthCare::Client.new telno: ENV['SOFTBANK_HEALTHCARE_TELNO'], password: ENV['SOFTBANK_HEALTHCARE_PASSWORD']
 
 def collect()
-  amount_of_body_fat = @client.weight * @client.body_fat
+  amount_of_body_fat = @client.weight * @client.body_fat / 100
   lean_body_mass = @client.weight - amount_of_body_fat
   @weight.set({}, @client.weight)
   @body_fat_percentage.set({}, @client.body_fat)
